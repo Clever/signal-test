@@ -1,0 +1,6 @@
+run:
+  type: docker
+env:
+resources:
+  cpu: .01
+  max_mem: .01
