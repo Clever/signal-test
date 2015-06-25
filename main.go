@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"gopkg.in/clever/kayvee-go.v2"
@@ -15,7 +16,7 @@ func main() {
 	go heartbeat(time.Second)
 
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, os.Kill)
+	signal.Notify(sigChan, os.Interrupt, os.Kill, syscall.SIGTERM)
 
 	for {
 		select {
