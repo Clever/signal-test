@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,12 +14,19 @@ import (
 
 type m map[string]interface{}
 
+var signals = []string{}
+
 func main() {
 	go heartbeat(time.Second)
+	go listenForSignals()
 
+	http.HandleFunc("/signal", SignalHandler)
+	log.Fatal(http.ListenAndServe("0.0.0.0:80", nil))
+}
+
+func listenForSignals() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, os.Kill, syscall.SIGTERM)
-
 	for {
 		select {
 		case sig := <-sigChan:
@@ -27,8 +36,22 @@ func main() {
 				"level":  kayvee.Info,
 				"signal": sig,
 			}))
+			signals = append(signals, sig.String())
 		}
 	}
+}
+
+func SignalHandler(w http.ResponseWriter, r *http.Request) {
+	encoder := json.NewEncoder(w)
+	if err := encoder.Encode(signals); err != nil {
+		log.Println(kayvee.Format(m{
+			"source": "signal-test",
+			"title":  "signal-handler",
+			"level":  kayvee.Error,
+			"error":  err.Error(),
+		}))
+	}
+	return
 }
 
 func heartbeat(interval time.Duration) {
