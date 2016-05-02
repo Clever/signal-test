@@ -4,3 +4,9 @@ env: []
 resources:
   cpu: .01
   max_mem: .01
+expose:
+  - name: http
+    port: 80
+    health_check:
+      type: http
+      path: /signal
