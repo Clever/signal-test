@@ -9,4 +9,4 @@ expose:
     port: 80
     health_check:
       type: http
-      path: /signal
+      path: /

@@ -21,6 +21,7 @@ func main() {
 	go listenForSignals()
 
 	http.HandleFunc("/signal", SignalHandler)
+	http.HandleFunc("/", HealthCheckHandler)
 	log.Fatal(http.ListenAndServe("0.0.0.0:80", nil))
 }
 
@@ -39,6 +40,10 @@ func listenForSignals() {
 			signals = append(signals, sig.String())
 		}
 	}
+}
+
+func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	return
 }
 
 func SignalHandler(w http.ResponseWriter, r *http.Request) {
