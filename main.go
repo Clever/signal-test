@@ -56,7 +56,12 @@ func SignalHandler(w http.ResponseWriter, r *http.Request) {
 			"error":  err.Error(),
 		}))
 	}
-	log.Println("Served /signal request")
+	log.Println(kayvee.Format(m{
+		"source": "signal-test",
+		"title":  "signal-handler",
+		"level":  kayvee.Info,
+		"msg":    "Served /signal request",
+	}))
 	return
 }
 
