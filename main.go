@@ -17,7 +17,7 @@ type m map[string]interface{}
 var signals = []string{}
 
 func main() {
-	go heartbeat(time.Second)
+	// go heartbeat(time.Second)
 	go listenForSignals()
 
 	http.HandleFunc("/signal", SignalHandler)
@@ -56,6 +56,7 @@ func SignalHandler(w http.ResponseWriter, r *http.Request) {
 			"error":  err.Error(),
 		}))
 	}
+	log.Println("Served /signal request")
 	return
 }
 
