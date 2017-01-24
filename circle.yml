@@ -7,6 +7,9 @@ machine:
 checkout:
   post:
   - $HOME/ci-scripts/circleci/golang-move-project
+test:
+  override:
+    - echo "no tests"
 deployment:
   all:
     branch: master
