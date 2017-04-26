@@ -10,3 +10,4 @@ expose:
     health_check:
       type: http
       path: /
+team: eng-infra
